@@ -35,6 +35,7 @@ python -u train_resnet.py --data-dir data/imagenet --data-type imagenet --depth 
 #####Result
 ######cifar 10
 1-crop validation error on cifar10 (32*32):
+
 | Network    | top-1 |
 | :------:   | :---: |
 |ResNet-164  | 5.46% |
@@ -42,6 +43,7 @@ python -u train_resnet.py --data-dir data/imagenet --data-type imagenet --depth 
 ----------------------------------------
 ######imagenet
 1-crop validation error on imagenet (center 224x224 crop from resized image with shorter side=256):
+
 | model   | top-1 | top-5 |
 |:------: |:-----:|:-----:|
 |ResNet-50|25.45% |  7.96%|
