@@ -55,15 +55,15 @@ def main():
         pad                 = 4 if args.data_type == "cifar10" else 0,
         fill_value          = 127,  # only used when pad is valid
         rand_crop           = True,
-		max_random_scale    = 1.0 if args.data_type == "cifar10" else 1.0,  # 480
-		min_random_scale    = 1.0 if args.data_type == "cifar10" else 0.533,  # 256.0/480.0
-		max_aspect_ratio    = 0.0 if args.data_type == "cifar10" else 0.25,
-		max_rotate_angle    = 0 if args.data_type == "cifar10" else 8,
-		random_h            = 36,  # 0.4*90
-		random_s            = 50,  # 0.4*127
-		random_l            = 50,  # 0.4*127
+        max_random_scale    = 1.0 if args.data_type == "cifar10" else 1.0,  # 480
+        min_random_scale    = 1.0 if args.data_type == "cifar10" else 0.533,  # 256.0/480.0
+        max_aspect_ratio    = 0.0 if args.data_type == "cifar10" else 0.25,
+        max_rotate_angle    = 0 if args.data_type == "cifar10" else 8,
+        random_h            = 36,  # 0.4*90
+        random_s            = 50,  # 0.4*127
+        random_l            = 50,  # 0.4*127
         rand_mirror = True,
-		shuffle     = True,
+        shuffle     = True,
         num_parts   = kv.num_workers,
         part_index  = kv.rank)
     val = mx.io.ImageRecordIter(
