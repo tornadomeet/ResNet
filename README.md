@@ -46,11 +46,11 @@ python -u train_resnet.py --data-dir data/imagenet --data-type imagenet --depth 
 
 | Network   | top-1 | top-5 |
 |:------: |:-----:|:-----:|
-|ResNet-50|25.45% |  7.96%|
+|ResNet-50|25.41% |  7.93%|
 
 ----------------------------------------
 ###Notes
-* I trained ResNet-50, but the result is not so good, top-1/top-5 acc of ResNet-50 is about 0.75%/0.16% worse than [ResNet-v1 caffe result](https://github.com/KaimingHe/deep-residual-networks/blob/master/README.md#results), this may due to io implentation in MXNet is some different(https://github.com/dmlc/mxnet/issues/2944).
+* I trained ResNet-50, but the result is not so good, top-1/top-5 acc of ResNet-50 is about 0.71%/0.13% worse than [ResNet-v1 caffe result](https://github.com/KaimingHe/deep-residual-networks/blob/master/README.md#results), this may due to io implentation in MXNet is some different(https://github.com/dmlc/mxnet/issues/2944).
 * Consider using torch io instead of mxnet io for training in the future.
 
 ###Reference
