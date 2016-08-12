@@ -70,16 +70,19 @@ def main():
         num_parts   = kv.num_workers,
         part_index  = kv.rank)
     val = mx.io.ImageRecordIter(
-        path_imgrec = os.path.join(args.data_dir, "test.rec"),
-        label_width = 1,
-        data_name   = 'data',
-        label_name  = 'softmax_label',
-        batch_size  = args.batch_size,
-        data_shape  = (3, 32, 32) if args.data_type=="cifar10" else (3, 224, 224),
-        rand_crop   = False,
-        rand_mirror = False,
-        num_parts   = kv.num_workers,
-        part_index  = kv.rank)
+        path_imgrec         = os.path.join(args.data_dir, "test.rec"),
+        label_width         = 1,
+        data_name           = 'data',
+        label_name          = 'softmax_label',
+        batch_size          = args.batch_size,
+        mean_r              = 123.68,  # used for both cifar and imagenet
+        mean_g              = 116.779,
+        mean_b              = 103.939,
+        data_shape          = (3, 32, 32) if args.data_type=="cifar10" else (3, 224, 224),
+        rand_crop           = False,
+        rand_mirror         = False,
+        num_parts           = kv.num_workers,
+        part_index          = kv.rank)
     model = mx.model.FeedForward(
         ctx                = devs,
         symbol             = symbol,
