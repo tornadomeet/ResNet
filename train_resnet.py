@@ -46,12 +46,15 @@ def main():
     if args.retrain:
         _, arg_params, aux_params = mx.model.load_checkpoint("model/resnet-{}-{}".format(args.data_type, args.depth), args.model_load_epoch)
     train = mx.io.ImageRecordIter(
-        path_imgrec         = os.path.join(args.data_dir, "train_480.rec"),
+        path_imgrec         = os.path.join(args.data_dir, "train.rec"),
         label_width         = 1,
         data_name           = 'data',
         label_name          = 'softmax_label',
         data_shape          = (3, 32, 32) if args.data_type=="cifar10" else (3, 224, 224),
         batch_size          = args.batch_size,
+        mean_r              = 123.68,  # used for both cifar and imagenet
+        mean_g              = 116.779,
+        mean_b              = 103.939,
         pad                 = 4 if args.data_type == "cifar10" else 0,
         fill_value          = 127,  # only used when pad is valid
         rand_crop           = True,
