@@ -81,10 +81,10 @@ def resnet(units, num_stage, filter_list, num_class, data_type, bottle_neck=True
     data = mx.sym.Variable(name='data')
     if data_type == 'cifar10':
         body = mx.sym.Convolution(data=data, num_filter=filter_list[0], kernel=(3, 3), stride=(1,1), pad=(1, 1),
-                                  no_bias=True, name="conv0", workspace=workspace)
+                                  no_bias=False, name="conv0", workspace=workspace)
     elif data_type == 'imagenet':
         body = mx.sym.Convolution(data=data, num_filter=filter_list[0], kernel=(7, 7), stride=(2,2), pad=(3, 3),
-                                  no_bias=True, name="conv0", workspace=workspace)
+                                  no_bias=False, name="conv0", workspace=workspace)
         body = mx.sym.BatchNorm(data=body, fix_gamma=False, eps=2e-5, name='bn0')
         body = mx.sym.Activation(data=body, act_type='relu', name='relu0')
         body = mx.symbol.Pooling(data=body, kernel=(3, 3), stride=(2,2), pad=(1,1), pool_type='max')
