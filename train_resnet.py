@@ -66,7 +66,7 @@ def main():
         num_parts           = kv.num_workers,
         part_index          = kv.rank)
     val = mx.io.ImageRecordIter(
-        path_imgrec         = os.path.join(args.data_dir, "test.rec"),
+        path_imgrec         = os.path.join(args.data_dir, "val.rec"),
         label_width         = 1,
         data_name           = 'data',
         label_name          = 'softmax_label',
