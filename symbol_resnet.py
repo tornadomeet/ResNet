@@ -79,12 +79,13 @@ def resnet(units, num_stage, filter_list, num_class, data_type, bottle_neck=True
     num_unit = len(units)
     assert(num_unit == num_stage)
     data = mx.sym.Variable(name='data')
+    data = mx.sym.BatchNorm(data=data, fix_gamma=True, eps=2e-5, name='bn_data')
     if data_type == 'cifar10':
         body = mx.sym.Convolution(data=data, num_filter=filter_list[0], kernel=(3, 3), stride=(1,1), pad=(1, 1),
-                                  no_bias=False, name="conv0", workspace=workspace)
+                                  no_bias=True, name="conv0", workspace=workspace)
     elif data_type == 'imagenet':
         body = mx.sym.Convolution(data=data, num_filter=filter_list[0], kernel=(7, 7), stride=(2,2), pad=(3, 3),
-                                  no_bias=False, name="conv0", workspace=workspace)
+                                  no_bias=True, name="conv0", workspace=workspace)
         body = mx.sym.BatchNorm(data=body, fix_gamma=False, eps=2e-5, name='bn0')
         body = mx.sym.Activation(data=body, act_type='relu', name='relu0')
         body = mx.symbol.Pooling(data=body, kernel=(3, 3), stride=(2,2), pad=(1,1), pool_type='max')
@@ -100,6 +101,6 @@ def resnet(units, num_stage, filter_list, num_class, data_type, bottle_neck=True
     relu1 = mx.sym.Activation(data=bn1, act_type='relu', name='relu1')
     # Although kernel is not used here when global_pool=True, we should put one
     pool1 = mx.symbol.Pooling(data=relu1, global_pool=True, kernel=(7, 7), pool_type='avg', name='pool1')
-    flat1 = mx.symbol.Flatten(data=pool1)
-    fc1 = mx.symbol.FullyConnected(data=flat1, num_hidden=num_class, name='fc1')
+    flat = mx.symbol.Flatten(data=pool1)
+    fc1 = mx.symbol.FullyConnected(data=flat, num_hidden=num_class, name='fc1')
     return mx.symbol.SoftmaxOutput(data=fc1, name='softmax')

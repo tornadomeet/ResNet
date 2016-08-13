@@ -52,32 +52,25 @@ def main():
         label_name          = 'softmax_label',
         data_shape          = (3, 32, 32) if args.data_type=="cifar10" else (3, 224, 224),
         batch_size          = args.batch_size,
-        mean_r              = 123.68,  # used for both cifar and imagenet
-        mean_g              = 116.779,
-        mean_b              = 103.939,
         pad                 = 4 if args.data_type == "cifar10" else 0,
         fill_value          = 127,  # only used when pad is valid
         rand_crop           = True,
         max_random_scale    = 1.0 if args.data_type == "cifar10" else 1.0,  # 480
         min_random_scale    = 1.0 if args.data_type == "cifar10" else 0.533,  # 256.0/480.0
-        max_aspect_ratio    = 0.0 if args.data_type == "cifar10" else 0.25,
-        max_rotate_angle    = 0 if args.data_type == "cifar10" else 8,
-        random_h            = 36,  # 0.4*90
-        random_s            = 50,  # 0.4*127
-        random_l            = 50,  # 0.4*127
-        rand_mirror = True,
-        shuffle     = True,
-        num_parts   = kv.num_workers,
-        part_index  = kv.rank)
+        max_aspect_ratio    = 0 if args.data_type == "cifar10" else 0.25,
+        random_h            = 0 if args.data_type == "cifar10" else 36,  # 0.4*90
+        random_s            = 0 if args.data_type == "cifar10" else 50,  # 0.4*127
+        random_l            = 0 if args.data_type == "cifar10" else 50,  # 0.4*127
+        rand_mirror         = True,
+        shuffle             = True,
+        num_parts           = kv.num_workers,
+        part_index          = kv.rank)
     val = mx.io.ImageRecordIter(
         path_imgrec         = os.path.join(args.data_dir, "test.rec"),
         label_width         = 1,
         data_name           = 'data',
         label_name          = 'softmax_label',
         batch_size          = args.batch_size,
-        mean_r              = 123.68,  # used for both cifar and imagenet
-        mean_g              = 116.779,
-        mean_b              = 103.939,
         data_shape          = (3, 32, 32) if args.data_type=="cifar10" else (3, 224, 224),
         rand_crop           = False,
         rand_mirror         = False,
@@ -88,7 +81,7 @@ def main():
         symbol             = symbol,
         arg_params         = arg_params,
         aux_params         = aux_params,
-        num_epoch          = 160,
+        num_epoch          = 160 if args.data_type == "cifar10" else 100,
         begin_epoch        = args.model_load_epoch if args.model_load_epoch else 0,
         learning_rate      = args.lr,
         momentum           = args.mom,
@@ -98,7 +91,7 @@ def main():
         initializer        = mx.init.Xavier(rnd_type='gaussian', factor_type="in", magnitude=2),
         lr_scheduler       = mx.lr_scheduler.MultiFactorScheduler(step=[80*epoch_size, 120*epoch_size], factor=0.1)
                              if args.data_type=='cifar10' else
-                             mx.lr_scheduler.MultiFactorScheduler(step=[40*epoch_size, 80*epoch_size, 120*epoch_size], factor=0.1),
+                             mx.lr_scheduler.MultiFactorScheduler(step=[30*epoch_size, 60*epoch_size, 90*epoch_size], factor=0.1),
         )
     model.fit(
         X                  = train,
