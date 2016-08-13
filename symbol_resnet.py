@@ -96,10 +96,10 @@ def resnet(units, num_stage, filter_list, num_class, data_type, bottle_neck=True
         for j in range(units[i]-1):
             body = residual_unit(body, filter_list[i+1], (1,1), True, name='stage%d_unit%d' % (i + 1, j + 2),
                                  bottle_neck=bottle_neck, workspace=workspace)
-    bn = mx.sym.BatchNorm(data=body, fix_gamma=False, eps=2e-5, name='bn')
-    relu = mx.sym.Activation(data=bn, act_type='relu', name='relu')
+    bn1 = mx.sym.BatchNorm(data=body, fix_gamma=False, eps=2e-5, name='bn1')
+    relu1 = mx.sym.Activation(data=bn1, act_type='relu', name='relu1')
     # Although kernel is not used here when global_pool=True, we should put one
-    pool = mx.symbol.Pooling(data=relu, global_pool=True, kernel=(7, 7), pool_type='avg')
-    flat = mx.symbol.Flatten(data=pool)
-    fc = mx.symbol.FullyConnected(data=flat, num_hidden=num_class, name='fc')
-    return mx.symbol.SoftmaxOutput(data=fc, name='softmax')
+    pool1 = mx.symbol.Pooling(data=relu1, global_pool=True, kernel=(7, 7), pool_type='avg', name='pool1')
+    flat1 = mx.symbol.Flatten(data=pool1)
+    fc1 = mx.symbol.FullyConnected(data=flat1, num_hidden=num_class, name='fc1')
+    return mx.symbol.SoftmaxOutput(data=fc1, name='softmax')
