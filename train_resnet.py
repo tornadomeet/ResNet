@@ -1,7 +1,6 @@
 import argparse,logging,os
 import mxnet as mx
 from symbol_resnet import resnet
-import pdb
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -13,7 +12,7 @@ def main():
             per_unit = [(args.depth-2)/9]
             units = per_unit*3
             symbol = resnet(units=units, num_stage=3, filter_list=[16, 64, 128, 256], num_class=10, data_type="cifar10",
-                            bottle_neck = True if args.depth >= 164 else False, workspace=512)
+                            bottle_neck = True if args.depth >= 164 else False, bn_mom=args.bn_mom, workspace=512)
         else:
             raise ValueError("no experiments done on detph {}, you can do it youself".format(args.depth))
     elif args.data_type == "imagenet":
@@ -32,7 +31,7 @@ def main():
         else:
             raise ValueError("no experiments done on detph {}, you can do it youself".format(args.depth))
         symbol = resnet(units=units, num_stage=4, filter_list=[64, 256, 512, 1024, 2048] if args.depth >=50 else [64, 64, 128, 256, 512],
-                        num_class=1000, data_type="imagenet", bottle_neck = True if args.depth >= 50 else False, workspace=512)
+                        num_class=1000, data_type="imagenet", bottle_neck = True if args.depth >= 50 else False, bn_mom=args.bn_mom, workspace=512)
     else:
          raise ValueError("do not support {} yet".format(args.data_type))
     devs = mx.cpu() if args.gpus is None else [mx.gpu(int(i)) for i in args.gpus.split(',')]
@@ -46,7 +45,8 @@ def main():
     if args.retrain:
         _, arg_params, aux_params = mx.model.load_checkpoint("model/resnet-{}-{}".format(args.data_type, args.depth), args.model_load_epoch)
     train = mx.io.ImageRecordIter(
-        path_imgrec         = os.path.join(args.data_dir, "train.rec"),
+        path_imgrec         = os.path.join(args.data_dir, "train_480_q90.rec"),
+        # path_imgrec         = os.path.join(args.data_dir, "train_256_q90.rec"),
         label_width         = 1,
         data_name           = 'data',
         label_name          = 'softmax_label',
@@ -66,7 +66,7 @@ def main():
         num_parts           = kv.num_workers,
         part_index          = kv.rank)
     val = mx.io.ImageRecordIter(
-        path_imgrec         = os.path.join(args.data_dir, "val.rec"),
+        path_imgrec         = os.path.join(args.data_dir, "val_256_q90.rec"),
         label_width         = 1,
         data_name           = 'data',
         label_name          = 'softmax_label',
@@ -81,7 +81,7 @@ def main():
         symbol             = symbol,
         arg_params         = arg_params,
         aux_params         = aux_params,
-        num_epoch          = 160 if args.data_type == "cifar10" else 100,
+        num_epoch          = 200 if args.data_type == "cifar10" else 110,
         begin_epoch        = args.model_load_epoch if args.model_load_epoch else 0,
         learning_rate      = args.lr,
         momentum           = args.mom,
@@ -112,6 +112,7 @@ if __name__ == "__main__":
                         help='the directory which contain the training list file')
     parser.add_argument('--lr', type=float, default=0.1, help='initialization learning reate')
     parser.add_argument('--mom', type=float, default=0.9, help='momentum for sgd')
+    parser.add_argument('--bn-mom', type=float, default=0.9, help='momentum for batch normlization')
     parser.add_argument('--wd', type=float, default=0.0001, help='weight decay for sgd')
     parser.add_argument('--batch-size', type=int, default=128, help='the batch size')
     parser.add_argument('--depth', type=int, default=50, help='the depth of resnet')
