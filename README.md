@@ -30,7 +30,7 @@ The trained ResNet models achieve a little better error rates than the [original
 
 ### How to Train
 
-####imanget
+###imanget
 you should create the ```*.rec``` file first, i recommend use this cmd parameters:  
 ```shell
 $im2rec_path train.lst train/ mxnet/train_480_q90.rec resize=480 quality=90
@@ -44,7 +44,7 @@ python -u train_resnet.py --data-dir data/imagenet \
 ```
 change depth to different number to support different model, currently suport ResNet-18, ResNet-34, ResNet-50, ResNet-101, ResNet-152, ResNet-200.
 
-####cifar10
+###cifar10
 same as above, first you should use ```im2rec``` to create the .rec file, then training with cmd like this:
 ```shell
 python -u train_resnet.py --data-dir data/cifar10 --data-type cifar10 \
@@ -52,7 +52,7 @@ python -u train_resnet.py --data-dir data/cifar10 --data-type cifar10 \
 ```
 change ```depth``` when training different model, only support```(depth-2)%9==0```, such as RestNet-110, ResNet-164, ResNet-1001...
 
-####retrain
+###retrain
 When training large dataset(like imagnet), it's better for us to change learning rate manually, or the training is killed by some other reasons, so retrain is very important.   
 the code here support retrain, suppose you want to retrain your resnet-50 model from epoch 70 and want to change lr=0.0005, wd=0.001, batch-size=256 using 8gpu, then you can try this cmd:
 ```shell
