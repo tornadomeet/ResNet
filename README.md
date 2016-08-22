@@ -33,7 +33,7 @@ The trained ResNet models achieve a little better error rates than the [original
 ###imanget
 you should create the ```*.rec``` file first, i recommend use this cmd parameters:  
 ```shell
-$im2rec_path train.lst train/ mxnet/train_480_q90.rec resize=480 quality=90
+$im2rec_path train.lst train/ data/imagenet/train_480_q90.rec resize=480 quality=90
 ```
 set ```resize=480``` and ```quality=90```(```quality=100``` will be best i think:)) here may use more disk memory(about ~103G), but this is very useful with scale augmentation during training[1][2], and can help reproducing a good result.
 
@@ -89,7 +89,7 @@ train = mx.io.ImageRecordIter(
 ```
 but you should prepare one ```train_256_q90.rec```  using ```im2rec```  like:
 ```shell
-$im2rec_path train.lst train/ mxnet/train_256_q90.rec resize=256 quality=90
+$im2rec_path train.lst train/ data/imagenet/train_256_q90.rec resize=256 quality=90
 ```
 
 ###Reference
