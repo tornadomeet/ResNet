@@ -37,7 +37,7 @@ $im2rec_path train.lst train/ data/imagenet/train_480_q90.rec resize=480 quality
 ```
 set ```resize=480``` and ```quality=90```(```quality=100``` will be best i think:)) here may use more disk memory(about ~103G), but this is very useful with scale augmentation during training[1][2], and can help reproducing a good result.
 
-because at this time, you are training imagenet , so we should change ```data-type = imagenet```, then the training cmd is like this(here i use 6 gpus for training):
+because you are training imagenet , so we should set ```data-type = imagenet```, then the training cmd is like this(here i use 6 gpus for training):
 ```shell
 python -u train_resnet.py --data-dir data/imagenet \
 --data-type imagenet --depth 50 --batch-size 256  --gpus=0,1,2,3,4,5
