@@ -96,4 +96,5 @@ $im2rec_path train.lst train/ data/imagenet/train_256_q90.rec resize=256 quality
 [1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).  
 [2] Kaiming He, et al. "Identity Mappings in Deep Residual Networks" arXiv:1603.05027 (2016)  
 [3] caffe official training code and model, https://github.com/KaimingHe/deep-residual-networks  
-[4] torch training code and model provided by facebook, https://github.com/facebook/fb.resnet.torch
+[4] torch training code and model provided by facebook, https://github.com/facebook/fb.resnet.torch  
+[5] MXNet resnet-v1 cifar10 examples,https://github.com/dmlc/mxnet/blob/master/example/image-classification/train_cifar10_resnet.py
