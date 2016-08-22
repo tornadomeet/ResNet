@@ -2,15 +2,15 @@ Reproduce ResNet-v2 using MXNet
 =====================================
 ## Requirements
 - Install [MXNet](http://torch.ch/docs/getting-started.html) on a machine with CUDA GPU, and it's better also installed with [cuDNN v5](https://developer.nvidia.com/cudnn)
-- Please fix the batch-norm bn and using this [pull request](https://github.com/dmlc/mxnet/pull/3049/files)
+- Please fix the batch-norm and using this [pull request](https://github.com/dmlc/mxnet/pull/3049/files)
 - Please fix the randomness if you want to train your own model and using this [pull request](https://github.com/dmlc/mxnet/pull/3001/files)
 
 ## Trained models
-Trained ResNet models are available for download from [baidu.yun](http://pan.baidu.com/s/1o8GnUxO) or [dropbox](https://www.dropbox.com/sh/681xbcj0oh1jlez/AAA8B7KvcJJXxfwMbXSblGPMa?dl=0), which also contains train.lst/val.lst(for ```im2rec```), synset.txt(for classify image)
+Trained ResNet models are available by download from [baidu.yun](http://pan.baidu.com/s/1o8GnUxO) or [dropbox](https://www.dropbox.com/sh/681xbcj0oh1jlez/AAA8B7KvcJJXxfwMbXSblGPMa?dl=0), which also contains train.lst/val.lst(for ```im2rec```), synset.txt(for classify image)
 
 The trained ResNet models achieve a little better error rates than the [original ResNet-v1 models](https://github.com/KaimingHe/deep-residual-networks).
 
-* ImageNet:single-crop (224x224) validation error rate
+* ImageNet:single center crop (224x224) validation error rate(%)
 
   | Network       | Top-1 error | Top-5 error |
   | :------------ | :---------: | :---------: |
@@ -22,7 +22,7 @@ The trained ResNet models achieve a little better error rates than the [original
   | ResNet-200    | --       | --        |
 
 
-* cifar10: dingle-crop validation error on cifar10 (32*32):
+* cifar10: single crop validation error rate(%):
 
   | Network    | top-1 |
   | :------:   | :---: |
@@ -35,14 +35,14 @@ you should create the ```*.rec``` file first, i recommend use this cmd parameter
 ```shell
 $im2rec_path train.lst train/ mxnet/train_480_q90.rec resize=480 quality=90
 ```
-set ```resize=480``` and ```quality=90``` here may use more disk memory(about ~103G), but this is very useful with scale augmentation during training[1][2], and can help reproducing a good result.
+set ```resize=480``` and ```quality=90```(```quality=100``` will be best i think:)) here may use more disk memory(about ~103G), but this is very useful with scale augmentation during training[1][2], and can help reproducing a good result.
 
-because at this time, you are training imagenet , so we should change ```data-type = imagenet```, then the training cmd is like this(here i use 6 gpu for training):
+because at this time, you are training imagenet , so we should change ```data-type = imagenet```, then the training cmd is like this(here i use 6 gpus for training):
 ```shell
 python -u train_resnet.py --data-dir data/imagenet \
 --data-type imagenet --depth 50 --batch-size 256  --gpus=0,1,2,3,4,5
 ```
-change depth to different number to support different model, currently suport ResNet-18, ResNet-34, ResNet-50, ResNet-101, ResNet-152, ResNet-200.
+change depth to different number to support different model, currently support ResNet-18, ResNet-34, ResNet-50, ResNet-101, ResNet-152, ResNet-200.
 
 ###cifar10
 same as above, first you should use ```im2rec``` to create the .rec file, then training with cmd like this:
@@ -53,7 +53,7 @@ python -u train_resnet.py --data-dir data/cifar10 --data-type cifar10 \
 change ```depth``` when training different model, only support```(depth-2)%9==0```, such as RestNet-110, ResNet-164, ResNet-1001...
 
 ###retrain
-When training large dataset(like imagnet), it's better for us to change learning rate manually, or the training is killed by some other reasons, so retrain is very important.   
+When training large dataset(like imagenet), it's better for us to change learning rate manually, or the training is killed by some other reasons, so retrain is very important.   
 the code here support retrain, suppose you want to retrain your resnet-50 model from epoch 70 and want to change lr=0.0005, wd=0.001, batch-size=256 using 8gpu, then you can try this cmd:
 ```shell
 python -u train_resnet.py --data-dir data/imagenet --data-type imagenet --depth 50 --batch-size 256 \
@@ -63,7 +63,7 @@ python -u train_resnet.py --data-dir data/imagenet --data-type imagenet --depth 
 ----------------------------------------
 ###Notes
 * it's better training the model in imagenet with epoch > 100, because this will lead better result.
-* when epoch is about 95, cancel the scale/color/ratio augmentation during training, this can be down by only commit out 6 lines of the code, like this:
+* when epoch is about 95, cancel the scale/color/ratio augmentation during training, this can be done by only comment out 6 lines of the code, like this:
 ```python
 train = mx.io.ImageRecordIter(
         # path_imgrec         = os.path.join(args.data_dir, "train_480_q90.rec"),
@@ -93,7 +93,7 @@ $im2rec_path train.lst train/ mxnet/train_256_q90.rec resize=256 quality=90
 ```
 
 ###Reference
-[1] He, Kaiming, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).  
-[2] He, Kaiming, et al. "Identity Mappings in Deep Residual Networks" arXiv:1603.05027 (2016)  
-[3] caffe offical training code and model, https://github.com/KaimingHe/deep-residual-networks  
+[1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).  
+[2] Kaiming He, et al. "Identity Mappings in Deep Residual Networks" arXiv:1603.05027 (2016)  
+[3] caffe official training code and model, https://github.com/KaimingHe/deep-residual-networks  
 [4] torch training code and model provided by facebook, https://github.com/facebook/fb.resnet.torch
