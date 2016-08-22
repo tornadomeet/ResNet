@@ -45,8 +45,8 @@ def main():
     if args.retrain:
         _, arg_params, aux_params = mx.model.load_checkpoint("model/resnet-{}-{}".format(args.data_type, args.depth), args.model_load_epoch)
     train = mx.io.ImageRecordIter(
-        # path_imgrec         = os.path.join(args.data_dir, "train_480_q90.rec"),
-        path_imgrec         = os.path.join(args.data_dir, "train_256_q90.rec"),
+        path_imgrec         = os.path.join(args.data_dir, "train_480_q90.rec"),
+        # path_imgrec         = os.path.join(args.data_dir, "train_256_q90.rec"),
         label_width         = 1,
         data_name           = 'data',
         label_name          = 'softmax_label',
