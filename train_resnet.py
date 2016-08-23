@@ -104,7 +104,7 @@ def main():
     # logging.info("top-1 and top-5 acc is {}".format(model.score(X = val, eval_metric = ['acc', mx.metric.create('top_k_accuracy', top_k = 5)])))
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="command for training lightened-gender_age")
+    parser = argparse.ArgumentParser(description="command for training resnet-v2")
     parser.add_argument('--gpus', type=str, default='0', help='the gpus will be used, e.g "0,1,2,3"')
     parser.add_argument('--data-dir', type=str, default='./data/imagenet/', help='the input data directory')
     parser.add_argument('--data-type', type=str, default='imagenet', help='the dataset type')
