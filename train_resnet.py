@@ -117,7 +117,7 @@ if __name__ == "__main__":
     parser.add_argument('--batch-size', type=int, default=256, help='the batch size')
     parser.add_argument('--depth', type=int, default=50, help='the depth of resnet')
     parser.add_argument('--num-examples', type=int, default=1281167, help='the number of training examples')
-    parser.add_argument('--kv-store', type=str, default='local', help='the kvstore type')
+    parser.add_argument('--kv-store', type=str, default='device', help='the kvstore type')
     parser.add_argument('--model-load-epoch', type=int, default=0, help='load the model on an epoch using the model-load-prefix')
     parser.add_argument('--retrain', action='store_true', default=False, help='true means continue training')
     args = parser.parse_args()
