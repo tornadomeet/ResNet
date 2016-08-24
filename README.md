@@ -92,6 +92,15 @@ but you should prepare one ```train_256_q90.rec```  using ```im2rec```  like:
 $im2rec_path train.lst train/ data/imagenet/train_256_q90.rec resize=256 quality=90
 ```
 
+in order to bring more shuffle during training like[1][2], before retrain at this time, we'd better use ```RandomSkipResizeIter``` instead of ```ImageRecordIter``` , so add ```--random-skip``` to your cmd, like:
+
+```shell
+python -u train_resnet.py --data-dir data/imagenet --data-type imagenet --depth 50 --batch-size 256 \
+--gpus=0,1,2,3,4,5,6,7 --model-load-epoch=95 --lr 0.0001 --random-skip --retrain
+```
+
+btw, when using ```RandomSkipResizeIter```, the training speed may slow down by half, but we only left at most 15 eopch to be trained , so it's not that bad.:)
+
 ###Reference
 [1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).  
 [2] Kaiming He, et al. "Identity Mappings in Deep Residual Networks" arXiv:1603.05027 (2016)  
