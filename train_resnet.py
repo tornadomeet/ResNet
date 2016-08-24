@@ -67,7 +67,7 @@ def main():
         part_index          = kv.rank)
     if args.random_skip:
         from skip_io import RandomSkipResizeIter
-        train = RandomSkipResizeIter(train, epoch_size, skip_ratio=0.5)
+        train = RandomSkipResizeIter(train, epoch_size, skip_ratio=0.5, reset_internal=True)  # reset_internal=False will drop speed down more
     val = mx.io.ImageRecordIter(
         path_imgrec         = os.path.join(args.data_dir, "val_256_q90.rec"),
         label_width         = 1,
