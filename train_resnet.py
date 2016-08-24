@@ -65,6 +65,9 @@ def main():
         shuffle             = True,
         num_parts           = kv.num_workers,
         part_index          = kv.rank)
+    if args.random_skip:
+        from skip_io import RandomSkipResizeIter
+        train = RandomSkipResizeIter(train, epoch_size, skip_ratio=0.5)
     val = mx.io.ImageRecordIter(
         path_imgrec         = os.path.join(args.data_dir, "val_256_q90.rec"),
         label_width         = 1,
@@ -118,7 +121,10 @@ if __name__ == "__main__":
     parser.add_argument('--depth', type=int, default=50, help='the depth of resnet')
     parser.add_argument('--num-examples', type=int, default=1281167, help='the number of training examples')
     parser.add_argument('--kv-store', type=str, default='device', help='the kvstore type')
-    parser.add_argument('--model-load-epoch', type=int, default=0, help='load the model on an epoch using the model-load-prefix')
+    parser.add_argument('--model-load-epoch', type=int, default=0,
+                        help='load the model on an epoch using the model-load-prefix')
+    parser.add_argument('--random-skip', action='store_true', default=False,
+                        help='true means using RandomSkipResizeIter instead of ImageRecordIter')
     parser.add_argument('--retrain', action='store_true', default=False, help='true means continue training')
     args = parser.parse_args()
     logging.info(args)
