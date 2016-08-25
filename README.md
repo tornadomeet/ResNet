@@ -99,7 +99,7 @@ python -u train_resnet.py --data-dir data/imagenet --data-type imagenet --depth 
 --gpus=0,1,2,3,4,5,6,7 --model-load-epoch=95 --lr 0.0001 --random-skip --retrain
 ```
 
-btw, when using ```RandomSkipResizeIter```, the training speed may drop a little.
+but, when using ```RandomSkipResizeIter```, the training speed may drop very much(about 3~4 tiimes slow)! so it should not be used before fix it.
 
 ###Reference
 [1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).  
