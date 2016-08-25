@@ -81,7 +81,7 @@ def main():
         symbol             = symbol,
         arg_params         = arg_params,
         aux_params         = aux_params,
-        num_epoch          = 200 if args.data_type == "cifar10" else 110,
+        num_epoch          = 200 if args.data_type == "cifar10" else 120,
         begin_epoch        = args.model_load_epoch if args.model_load_epoch else 0,
         learning_rate      = args.lr,
         momentum           = args.mom,
@@ -89,7 +89,7 @@ def main():
         optimizer          = 'nag',
         # optimizer          = 'sgd',
         initializer        = mx.init.Xavier(rnd_type='gaussian', factor_type="in", magnitude=2),
-        lr_scheduler       = mx.lr_scheduler.MultiFactorScheduler(step=[80*epoch_size, 120*epoch_size], factor=0.1)
+        lr_scheduler       = mx.lr_scheduler.MultiFactorScheduler(step=[120*epoch_size, 160*epoch_size], factor=0.1)
                              if args.data_type=='cifar10' else
                              mx.lr_scheduler.MultiFactorScheduler(step=[30*epoch_size, 60*epoch_size, 90*epoch_size], factor=0.1),
         )
