@@ -2,7 +2,6 @@ Reproduce ResNet-v2 using MXNet
 =====================================
 ## Requirements
 - Install [MXNet](http://mxnet.readthedocs.io/en/latest/how_to/build.html) on a machine with CUDA GPU, and it's better also installed with [cuDNN v5](https://developer.nvidia.com/cudnn)
-- Please fix the batch-norm and using this [pull request](https://github.com/dmlc/mxnet/pull/3049/files)
 - Please fix the randomness if you want to train your own model and using this [pull request](https://github.com/dmlc/mxnet/pull/3001/files)
 
 ## Trained models
@@ -91,6 +90,8 @@ but you should prepare one ```train_256_q90.rec```  using ```im2rec```  like:
 ```shell
 $im2rec_path train.lst train/ data/imagenet/train_256_q90.rec resize=256 quality=90
 ```
+
+* it's better for running longer than 30 epoch before first decrease the ```lr```(such as 60), so you may decide  the epoch number by observe the val-acc curve, and set lr with ```retrain```.
 
 ###Reference
 [1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).  
