@@ -25,7 +25,7 @@ The trained ResNet models achieve a little better error rates than the [original
 
   | Network    | top-1 |
   | :------:   | :---: |
-  |ResNet-164  | 5.46 |
+  |ResNet-164  | 4.68 |
 
 ### How to Train
 
