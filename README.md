@@ -7,7 +7,7 @@ Reproduce ResNet-v2 using MXNet
 ## Trained models
 Trained ResNet models are available by download from [baidu.yun](http://pan.baidu.com/s/1o8GnUxO) or [dropbox](https://www.dropbox.com/sh/681xbcj0oh1jlez/AAA8B7KvcJJXxfwMbXSblGPMa?dl=0), which also contains train.lst/val.lst(for ```im2rec```), synset.txt(for classify image)
 
-The trained ResNet models achieve a little better error rates than the [original ResNet-v1 models](https://github.com/KaimingHe/deep-residual-networks).
+The trained ResNet models achieve better error rates than the [original ResNet-v1 models](https://github.com/KaimingHe/deep-residual-networks).
 
 * ImageNet:single center crop (224x224) validation error rate(%)
 
@@ -25,7 +25,7 @@ The trained ResNet models achieve a little better error rates than the [original
 
   | Network    | top-1 |
   | :------:   | :---: |
-  |ResNet-164  | 5.46 |
+  |ResNet-164  | 4.68 |
 
 ### How to Train
 
