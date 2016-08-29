@@ -9,7 +9,10 @@ logger.setLevel(logging.INFO)
 def multi_factor_scheduler(begin_epoch, epoch_size, step=[60, 75, 90], factor=0.1):
     step_ = [x-begin_epoch for x in step if x-begin_epoch >=0]
     step_ = [epoch_size if x == 0 else x * epoch_size for x in step_]  # decrease lr next epoch
-    return mx.lr_scheduler.MultiFactorScheduler(step=step_, factor=factor)
+    if len(step_) == 0:
+        return None
+    else:
+        return mx.lr_scheduler.MultiFactorScheduler(step=step_, factor=factor)
 
 
 def main():
