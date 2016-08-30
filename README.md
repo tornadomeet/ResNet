@@ -17,7 +17,7 @@ The trained ResNet models achieve better error rates than the [original ResNet-v
   | ResNet-34     | --      | --        |
   | ResNet-50     | 24.56   | 7.33   |
   | ResNet-101    | --       | --        |
-  | ResNet-152    | --       | --        |
+  | ResNet-152    | 22.25       | 6.42        |
   | ResNet-200    | --       | --        |
 
 
