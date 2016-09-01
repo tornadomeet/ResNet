@@ -5,20 +5,19 @@ Reproduce ResNet-v2 using MXNet
 - Please fix the randomness if you want to train your own model and using this [pull request](https://github.com/dmlc/mxnet/pull/3001/files)
 
 ## Trained models
-Trained ResNet models are available by download from [baidu.yun](http://pan.baidu.com/s/1o8GnUxO) or [dropbox](https://www.dropbox.com/sh/681xbcj0oh1jlez/AAA8B7KvcJJXxfwMbXSblGPMa?dl=0), which also contains train.lst/val.lst(for ```im2rec```), synset.txt(for classify image)
 
-The trained ResNet models achieve better error rates than the [original ResNet-v1 models](https://github.com/KaimingHe/deep-residual-networks).
+The trained ResNet models achieve better error rates than the [original ResNet-v1 models](https://github.com/KaimingHe/deep-residual-networks). 
 
 * ImageNet:single center crop (224x224) validation error rate(%)
 
-  | Network       | Top-1 error | Top-5 error |
-  | :------------ | :---------: | :---------: |
-  | ResNet-18     | 30.90       | 11.01       |
-  | ResNet-34     | --      | --        |
-  | ResNet-50     | 24.56   | 7.33   |
-  | ResNet-101    | 22.68      | 6.58        |
-  | ResNet-152    | 22.25       | 6.42        |
-  | ResNet-200    | --       | --        |
+  | Network       | Top-1 error | Top-5 error | Traind Model | 
+  | :------------ | :---------: | :---------: | :-------------: |
+  | ResNet-18     | 30.90       | 11.01       |  |
+  | ResNet-34     | --      | --        | |
+  | ResNet-50     | 24.56   | 7.33   | [baidu.yun](http://pan.baidu.com/s/1o8GnUxO) or [dropbox](https://www.dropbox.com/sh/681xbcj0oh1jlez/AAA8B7KvcJJXxfwMbXSblGPMa?dl=0) |
+  | ResNet-101    | 22.68      | 6.58        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/101-layers/) |
+  | ResNet-152    | 22.25       | 6.42        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/152-layers/) |
+  | ResNet-200    | --       | --        | |
 
 
 * cifar10: single crop validation error rate(%):
@@ -27,9 +26,9 @@ The trained ResNet models achieve better error rates than the [original ResNet-v
   | :------:   | :---: |
   |ResNet-164  | 4.68 |
 
-### How to Train
+## How to Train
 
-###imanget
+### imagenet
 you should create the ```*.rec``` file first, i recommend use this cmd parameters:
 ```shell
 $im2rec_path train.lst train/ data/imagenet/train_480_q90.rec resize=480 quality=90
@@ -43,7 +42,7 @@ python -u train_resnet.py --data-dir data/imagenet \
 ```
 change depth to different number to support different model, currently support ResNet-18, ResNet-34, ResNet-50, ResNet-101, ResNet-152, ResNet-200.
 
-###cifar10
+### cifar10
 same as above, first you should use ```im2rec``` to create the .rec file, then training with cmd like this:
 ```shell
 python -u train_resnet.py --data-dir data/cifar10 --data-type cifar10 \
@@ -51,7 +50,7 @@ python -u train_resnet.py --data-dir data/cifar10 --data-type cifar10 \
 ```
 change ```depth``` when training different model, only support```(depth-2)%9==0```, such as RestNet-110, ResNet-164, ResNet-1001...
 
-###retrain
+### retrain
 When training large dataset(like imagenet), it's better for us to change learning rate manually, or the training is killed by some other reasons, so retrain is very important.
 the code here support retrain, suppose you want to retrain your resnet-50 model from epoch 70 and want to change lr=0.0005, wd=0.001, batch-size=256 using 8gpu, then you can try this cmd:
 ```shell
@@ -59,8 +58,7 @@ python -u train_resnet.py --data-dir data/imagenet --data-type imagenet --depth 
 --gpus=0,1,2,3,4,5,6,7 --model-load-epoch=70 --lr 0.0005 --wd 0.001 --retrain
 ```
 
-----------------------------------------
-###Notes
+### Notes
 * it's better training the model in imagenet with epoch > 100, because this will lead better result.
 * when epoch is about 95, cancel the scale/color/ratio augmentation during training, this can be done by only comment out 6 lines of the code, like this:
 ```python
@@ -93,7 +91,11 @@ $im2rec_path train.lst train/ data/imagenet/train_256_q90.rec resize=256 quality
 
 * it's better for running longer than 30 epoch before first decrease the ```lr```(such as 60), so you may decide  the epoch number by observe the val-acc curve, and set lr with ```retrain```.
 
-###Reference
+## How to use Trained Models
+
+TODO
+
+## Reference
 [1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).
 [2] Kaiming He, et al. "Identity Mappings in Deep Residual Networks" arXiv:1603.05027 (2016)
 [3] caffe official training code and model, https://github.com/KaimingHe/deep-residual-networks
