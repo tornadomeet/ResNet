@@ -16,7 +16,7 @@ The trained ResNet models achieve better error rates than the [original ResNet-v
   | ResNet-18     | 30.90       | 11.01       |
   | ResNet-34     | --      | --        |
   | ResNet-50     | 24.56   | 7.33   |
-  | ResNet-101    | --       | --        |
+  | ResNet-101    | 22.68      | 6.58        |
   | ResNet-152    | 22.25       | 6.42        |
   | ResNet-200    | --       | --        |
 
@@ -30,7 +30,7 @@ The trained ResNet models achieve better error rates than the [original ResNet-v
 ### How to Train
 
 ###imanget
-you should create the ```*.rec``` file first, i recommend use this cmd parameters:  
+you should create the ```*.rec``` file first, i recommend use this cmd parameters:
 ```shell
 $im2rec_path train.lst train/ data/imagenet/train_480_q90.rec resize=480 quality=90
 ```
@@ -52,12 +52,12 @@ python -u train_resnet.py --data-dir data/cifar10 --data-type cifar10 \
 change ```depth``` when training different model, only support```(depth-2)%9==0```, such as RestNet-110, ResNet-164, ResNet-1001...
 
 ###retrain
-When training large dataset(like imagenet), it's better for us to change learning rate manually, or the training is killed by some other reasons, so retrain is very important.   
+When training large dataset(like imagenet), it's better for us to change learning rate manually, or the training is killed by some other reasons, so retrain is very important.
 the code here support retrain, suppose you want to retrain your resnet-50 model from epoch 70 and want to change lr=0.0005, wd=0.001, batch-size=256 using 8gpu, then you can try this cmd:
 ```shell
 python -u train_resnet.py --data-dir data/imagenet --data-type imagenet --depth 50 --batch-size 256 \
 --gpus=0,1,2,3,4,5,6,7 --model-load-epoch=70 --lr 0.0005 --wd 0.001 --retrain
-```  
+```
 
 ----------------------------------------
 ###Notes
@@ -94,8 +94,8 @@ $im2rec_path train.lst train/ data/imagenet/train_256_q90.rec resize=256 quality
 * it's better for running longer than 30 epoch before first decrease the ```lr```(such as 60), so you may decide  the epoch number by observe the val-acc curve, and set lr with ```retrain```.
 
 ###Reference
-[1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).  
-[2] Kaiming He, et al. "Identity Mappings in Deep Residual Networks" arXiv:1603.05027 (2016)  
-[3] caffe official training code and model, https://github.com/KaimingHe/deep-residual-networks  
-[4] torch training code and model provided by facebook, https://github.com/facebook/fb.resnet.torch  
+[1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).
+[2] Kaiming He, et al. "Identity Mappings in Deep Residual Networks" arXiv:1603.05027 (2016)
+[3] caffe official training code and model, https://github.com/KaimingHe/deep-residual-networks
+[4] torch training code and model provided by facebook, https://github.com/facebook/fb.resnet.torch
 [5] MXNet resnet-v1 cifar10 examples,https://github.com/dmlc/mxnet/blob/master/example/image-classification/train_cifar10_resnet.py
