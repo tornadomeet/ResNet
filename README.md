@@ -6,11 +6,11 @@ Reproduce ResNet-v2 using MXNet
 
 ## Trained models
 
-The trained ResNet models achieve better error rates than the [original ResNet-v1 models](https://github.com/KaimingHe/deep-residual-networks). 
+The trained ResNet models achieve better error rates than the [original ResNet-v1 models](https://github.com/KaimingHe/deep-residual-networks).
 
 * ImageNet:single center crop (224x224) validation error rate(%)
 
-  | Network       | Top-1 error | Top-5 error | Traind Model | 
+  | Network       | Top-1 error | Top-5 error | Traind Model |
   | :------------ | :---------: | :---------: | :-------------: |
   | ResNet-18     | 30.90       | 11.01       |  |
   | ResNet-34     | --      | --        | |
@@ -59,8 +59,8 @@ python -u train_resnet.py --data-dir data/imagenet --data-type imagenet --depth 
 ```
 
 ### Notes
-* it's better training the model in imagenet with epoch > 100, because this will lead better result.
-* when epoch is about 95, cancel the scale/color/ratio augmentation during training, this can be done by only comment out 6 lines of the code, like this:
+* it's better training the model in imagenet with epoch > 110, because this will lead better result.
+* when epoch is about 95, cancel the scale/color/aspect augmentation during training, this can be done by only comment out 6 lines of the code, like this:
 ```python
 train = mx.io.ImageRecordIter(
         # path_imgrec         = os.path.join(args.data_dir, "train_480_q90.rec"),
@@ -88,7 +88,7 @@ but you should prepare one ```train_256_q90.rec```  using ```im2rec```  like:
 ```shell
 $im2rec_path train.lst train/ data/imagenet/train_256_q90.rec resize=256 quality=90
 ```
-
+cancel this scale/color/aspect augmentation can be done easily by using ```--aug-level=1``` in your cmd.
 * it's better for running longer than 30 epoch before first decrease the ```lr```(such as 60), so you may decide  the epoch number by observe the val-acc curve, and set lr with ```retrain```.
 
 ## How to use Trained Models
@@ -96,8 +96,8 @@ $im2rec_path train.lst train/ data/imagenet/train_256_q90.rec resize=256 quality
 TODO
 
 ## Reference
-[1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).
-[2] Kaiming He, et al. "Identity Mappings in Deep Residual Networks" arXiv:1603.05027 (2016)
-[3] caffe official training code and model, https://github.com/KaimingHe/deep-residual-networks
-[4] torch training code and model provided by facebook, https://github.com/facebook/fb.resnet.torch
+[1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).  
+[2] Kaiming He, et al. "Identity Mappings in Deep Residual Networks" arXiv:1603.05027 (2016)  
+[3] caffe official training code and model, https://github.com/KaimingHe/deep-residual-networks  
+[4] torch training code and model provided by facebook, https://github.com/facebook/fb.resnet.torch  
 [5] MXNet resnet-v1 cifar10 examples,https://github.com/dmlc/mxnet/blob/master/example/image-classification/train_cifar10_resnet.py

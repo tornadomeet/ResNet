@@ -7,16 +7,13 @@ logger.setLevel(logging.INFO)
 
 
 def multi_factor_scheduler(begin_epoch, epoch_size, step=[60, 75, 90], factor=0.1):
-    step_ = [x-begin_epoch for x in step if x-begin_epoch >=0]
-    step_ = [epoch_size if x == 0 else x * epoch_size for x in step_]  # decrease lr next epoch
-    if len(step_) == 0:
-        return None
-    else:
-        return mx.lr_scheduler.MultiFactorScheduler(step=step_, factor=factor)
+    step_ = [epoch_size * (x-begin_epoch) for x in step if x-begin_epoch > 0]
+    return mx.lr_scheduler.MultiFactorScheduler(step=step_, factor=factor) if len(step_) else None
 
 
 def main():
     if args.data_type == "cifar10":
+        args.aug_level = 1
         # depth should be one of 110, 164, 1001,...,which is should fit (args.depth-2)%9 == 0
         if((args.depth-2)%9 == 0 and args.depth >= 164):
             per_unit = [(args.depth-2)/9]
@@ -63,9 +60,11 @@ def main():
     if args.retrain:
         _, arg_params, aux_params = mx.model.load_checkpoint("model/resnet-{}-{}".format(args.data_type, args.depth),
                                                              args.model_load_epoch)
+    import pdb; pdb.set_trace()
     train = mx.io.ImageRecordIter(
-        path_imgrec         = os.path.join(args.data_dir, "train_480_q90.rec"),
-        # path_imgrec         = os.path.join(args.data_dir, "train_256_q90.rec"),
+        path_imgrec         = os.path.join(args.data_dir, "train.rec") if args.data_type == 'cifar10' else
+                              os.path.join(args.data_dir, "train_256_q90.rec") if args.aug_level == 1
+                              else os.path.join(args.data_dir, "train_480_q90.rec"),
         label_width         = 1,
         data_name           = 'data',
         label_name          = 'softmax_label',
@@ -74,18 +73,21 @@ def main():
         pad                 = 4 if args.data_type == "cifar10" else 0,
         fill_value          = 127,  # only used when pad is valid
         rand_crop           = True,
-        max_random_scale    = 1.0 if args.data_type == "cifar10" else 1.0,  # 480
-        min_random_scale    = 1.0 if args.data_type == "cifar10" else 0.533,  # 256.0/480.0
-        max_aspect_ratio    = 0 if args.data_type == "cifar10" else 0.25,
-        random_h            = 0 if args.data_type == "cifar10" else 36,  # 0.4*90
-        random_s            = 0 if args.data_type == "cifar10" else 50,  # 0.4*127
-        random_l            = 0 if args.data_type == "cifar10" else 50,  # 0.4*127
+        max_random_scale    = 1.0,  # 480 with imagnet, 32 with cifar10
+        min_random_scale    = 1.0 if args.data_type == "cifar10" else 1.0 if args.aug_level == 1 else 0.533,  # 256.0/480.0
+        max_aspect_ratio    = 0 if args.data_type == "cifar10" else 0 if args.aug_level == 1 else 0.25,
+        random_h            = 0 if args.data_type == "cifar10" else 0 if args.aug_level == 1 else 36,  # 0.4*90
+        random_s            = 0 if args.data_type == "cifar10" else 0 if args.aug_level == 1 else 50,  # 0.4*127
+        random_l            = 0 if args.data_type == "cifar10" else 0 if args.aug_level == 1 else 50,  # 0.4*127
+        max_rotate_angle    = 0 if args.aug_level <= 2 else 10,
+        max_shear_ratio     = 0 if args.aug_level <= 2 else 0.1,
         rand_mirror         = True,
         shuffle             = True,
         num_parts           = kv.num_workers,
         part_index          = kv.rank)
     val = mx.io.ImageRecordIter(
-        path_imgrec         = os.path.join(args.data_dir, "val_256_q90.rec"),
+        path_imgrec         = os.path.join(args.data_dir, "val.rec") if args.data_type == 'cifar10' else
+                              os.path.join(args.data_dir, "val_256_q90.rec"),
         label_width         = 1,
         data_name           = 'data',
         label_name          = 'softmax_label',
@@ -136,6 +138,10 @@ if __name__ == "__main__":
     parser.add_argument('--wd', type=float, default=0.0001, help='weight decay for sgd')
     parser.add_argument('--batch-size', type=int, default=256, help='the batch size')
     parser.add_argument('--depth', type=int, default=50, help='the depth of resnet')
+    parser.add_argument('--aug-level', type=int, default=2, choices=[1, 2, 3],
+                        help='level 1: use only random crop and random mirror\n'
+                             'level 2: add scale/aspect/hsv augmentation based on level 1\n'
+                             'level 3: add rotation/shear augmentation based on level 2')
     parser.add_argument('--num-examples', type=int, default=1281167, help='the number of training examples')
     parser.add_argument('--kv-store', type=str, default='device', help='the kvstore type')
     parser.add_argument('--model-load-epoch', type=int, default=0,
