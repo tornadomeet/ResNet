@@ -60,7 +60,6 @@ def main():
     if args.retrain:
         _, arg_params, aux_params = mx.model.load_checkpoint("model/resnet-{}-{}".format(args.data_type, args.depth),
                                                              args.model_load_epoch)
-    import pdb; pdb.set_trace()
     train = mx.io.ImageRecordIter(
         path_imgrec         = os.path.join(args.data_dir, "train.rec") if args.data_type == 'cifar10' else
                               os.path.join(args.data_dir, "train_256_q90.rec") if args.aug_level == 1
