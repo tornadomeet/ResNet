@@ -12,9 +12,9 @@ The trained ResNet models achieve better error rates than the [original ResNet-v
 
   | Network       | Top-1 error | Top-5 error | Traind Model |
   | :------------ | :---------: | :---------: | :-------------: |
-  | ResNet-18     | 30.90       | 11.01       |  |
+  | ResNet-18     | 30.90       | 11.02       |[baidu.yun](http://pan.baidu.com/s/1o8GnUxO) or  [dropbox](https://www.dropbox.com/sh/681xbcj0oh1jlez/AAA8B7KvcJJXxfwMbXSblGPMa?dl=0) |
   | ResNet-34     | --      | --        | |
-  | ResNet-50     | 24.56   | 7.33   | [baidu.yun](http://pan.baidu.com/s/1o8GnUxO) or [dropbox](https://www.dropbox.com/sh/681xbcj0oh1jlez/AAA8B7KvcJJXxfwMbXSblGPMa?dl=0) |
+  | ResNet-50     | 24.39   | 7.24   | [baidu.yun](http://pan.baidu.com/s/1o8GnUxO) or [dropbox](https://www.dropbox.com/sh/681xbcj0oh1jlez/AAA8B7KvcJJXxfwMbXSblGPMa?dl=0) |
   | ResNet-101    | 22.68      | 6.58        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/101-layers/) |
   | ResNet-152    | 22.25       | 6.42        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/152-layers/) |
   | ResNet-200    | --       | --        | |
