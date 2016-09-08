@@ -12,9 +12,9 @@ The trained ResNet models achieve better error rates than the [original ResNet-v
 
   | Network       | Top-1 error | Top-5 error | Traind Model |
   | :------------ | :---------: | :---------: | :-------------: |
-  | ResNet-18     | 30.90       | 11.02       |[baidu.yun](http://pan.baidu.com/s/1o8GnUxO) or  [dropbox](https://www.dropbox.com/sh/681xbcj0oh1jlez/AAA8B7KvcJJXxfwMbXSblGPMa?dl=0) |
+  | ResNet-18     | 30.90       | 11.02       |[data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/18-layers/) |
   | ResNet-34     | --      | --        | |
-  | ResNet-50     | 24.39   | 7.24   | [baidu.yun](http://pan.baidu.com/s/1o8GnUxO) or [dropbox](https://www.dropbox.com/sh/681xbcj0oh1jlez/AAA8B7KvcJJXxfwMbXSblGPMa?dl=0) |
+  | ResNet-50     | 24.39   | 7.24   | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/50-layers/) |
   | ResNet-101    | 22.68      | 6.58        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/101-layers/) |
   | ResNet-152    | 22.25       | 6.42        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/152-layers/) |
   | ResNet-200    | --       | --        | |
@@ -92,8 +92,9 @@ cancel this scale/color/aspect augmentation can be done easily by using ```--aug
 * it's better for running longer than 30 epoch before first decrease the ```lr```(such as 60), so you may decide  the epoch number by observe the val-acc curve, and set lr with ```retrain```.
 
 ## How to use Trained Models
-
-TODO
+we can use the pre-trained model to classify one input image, the step is easy:
+* download the pre-trained model form [data.dml.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/) and put it into the predict directory.
+* ```cd predict``` and run ```python -u predict.py --img test.jpg --prefix resnet-50 --gpu 0```, this means you want to recgnition test.jpg using model resnet-50-0000.params and gpu 0, then it will output the classification result.
 
 ## Reference
 [1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).  
