@@ -13,7 +13,7 @@ The trained ResNet models achieve better error rates than the [original ResNet-v
   | Network       | Top-1 error | Top-5 error | Traind Model |
   | :------------ | :---------: | :---------: | :-------------: |
   | ResNet-18     | 30.90       | 11.02       |[data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/18-layers/) |
-  | ResNet-34     | --      | --        | |
+  | ResNet-34     | 27.20      | 8.86        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/34-layers/) |
   | ResNet-50     | 24.39   | 7.24   | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/50-layers/) |
   | ResNet-101    | 22.68      | 6.58        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/101-layers/) |
   | ResNet-152    | 22.25       | 6.42        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/152-layers/) |
