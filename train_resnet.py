@@ -48,18 +48,18 @@ def main():
                         if args.depth >= 50 else False, bn_mom=args.bn_mom, workspace=512)
     else:
          raise ValueError("do not support {} yet".format(args.data_type))
+    kv = mx.kvstore.create(args.kv_store)
     devs = mx.cpu() if args.gpus is None else [mx.gpu(int(i)) for i in args.gpus.split(',')]
-    epoch_size = max(int(args.num_examples / args.batch_size), 1)
+    epoch_size = max(int(args.num_examples / args.batch_size / kv.num_workers), 1)
     begin_epoch = args.model_load_epoch if args.model_load_epoch else 0
     if not os.path.exists("./model"):
         os.mkdir("./model")
-    checkpoint = mx.callback.do_checkpoint("model/resnet-{}-{}".format(args.data_type, args.depth))
-    kv = mx.kvstore.create(args.kv_store)
+    model_prefix = "model/resnet-{}-{}-{}".format(args.data_type, args.depth, kv.rank)
+    checkpoint = mx.callback.do_checkpoint(model_prefix)
     arg_params = None
     aux_params = None
     if args.retrain:
-        _, arg_params, aux_params = mx.model.load_checkpoint("model/resnet-{}-{}".format(args.data_type, args.depth),
-                                                             args.model_load_epoch)
+        _, arg_params, aux_params = mx.model.load_checkpoint(model_prefix, args.model_load_epoch)
     train = mx.io.ImageRecordIter(
         path_imgrec         = os.path.join(args.data_dir, "train.rec") if args.data_type == 'cifar10' else
                               os.path.join(args.data_dir, "train_256_q90.rec") if args.aug_level == 1
@@ -149,4 +149,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
     logging.info(args)
     main()
-
