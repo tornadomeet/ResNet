@@ -91,6 +91,24 @@ $im2rec_path train.lst train/ data/imagenet/train_256_q90.rec resize=256 quality
 cancel this scale/color/aspect augmentation can be done easily by using ```--aug-level=1``` in your cmd.
 * it's better for running longer than 30 epoch before first decrease the ```lr```(such as 60), so you may decide  the epoch number by observe the val-acc curve, and set lr with ```retrain```.
 
+## ResNet-v2 vs ResNet-v1
+**Does ResNet-v2 always achieve better result than ResNet-v1 on imagnet?**  
+The answer is **NO**, ResNet-v2 has no advantage or even has disadvantage than ResNet-v1 when  `depth<152`, we can get the following result from paper[2].(why?)  
+
+ImageNet:single center crop validation error rate(%)  
+
+| Network    |crop-size | top-1 |  top-5 |
+| :------:   | :---: | :---: |:---: |
+|ResNet-101-v1  | 224x224 |23.6|7.1|
+|ResNet-101-v2  | 224x224 |24.6|7.5|
+|ResNet-152-v1  | 320x320 |21.3|5.5|
+|ResNet-152-v2  | 320x320 |21.1|5.5|
+
+we can see that:
+* when `depth=101`, ResNet-v2 is 1% worse than ResNet-v1 on top-1 and 0.4% worse on top-5.   
+* when `depth=152`, ResNet-v2 is only 0.2% better than ResNet-v1 on top-1 and owns the same performance on top-5 even when crop-size=320x320.
+
+
 ## How to use Trained Models
 we can use the pre-trained model to classify one input image, the step is easy:
 * download the pre-trained model form [data.dml.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/) and put it into the predict directory.
