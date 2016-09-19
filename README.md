@@ -29,7 +29,9 @@ The trained ResNet models achieve better error rates than the [original ResNet-v
 ## How to Train
 
 ### imagenet
-you should create the ```*.rec``` file first, i recommend use this cmd parameters:
+first you should prepare the `train.lst` and `val.lst`, you can generate this list files by yourself(please ref.[make-the-image-list]( http://mxnet.readthedocs.io/en/latest/packages/python/io.html#make-the-image-list), and do not forget to shuffle the list files!), or just download the provided version from [here](http://data.dmlc.ml/mxnet/models/imagenet/resnet/).  
+
+then you can create the ```*.rec``` file, i recommend use this cmd parameters:
 ```shell
 $im2rec_path train.lst train/ data/imagenet/train_480_q90.rec resize=480 quality=90
 ```
@@ -95,7 +97,7 @@ cancel this scale/color/aspect augmentation can be done easily by using ```--aug
 **Does ResNet-v2 always achieve better result than ResNet-v1 on imagnet?**  
 The answer is **NO**, ResNet-v2 has no advantage or even has disadvantage than ResNet-v1 when  `depth<152`, we can get the following result from paper[2].(why?)  
 
-ImageNet:single center crop validation error rate(%)  
+ImageNet: single center crop validation error rate(%)  
 
 | Network    |crop-size | top-1 |  top-5 |
 | :------:   | :---: | :---: |:---: |
