@@ -8,7 +8,11 @@ Reproduce ResNet-v2 using MXNet
 
 The trained ResNet models achieve better error rates than the [original ResNet-v1 models](https://github.com/KaimingHe/deep-residual-networks).
 
-* ImageNet:single center crop (224x224) validation error rate(%)
+### ImageNet 1K
+
+  Imagenet 1000 class dataset with 1.2 million images.
+
+  single center crop (224x224) validation error rate(%)
 
   | Network       | Top-1 error | Top-5 error | Traind Model |
   | :------------ | :---------: | :---------: | :-------------: |
@@ -19,17 +23,31 @@ The trained ResNet models achieve better error rates than the [original ResNet-v
   | ResNet-152    | 22.25       | 6.42        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/152-layers/) |
   | ResNet-200    | --       | --        | |
 
+### ImageNet 11K:
 
-* cifar10: single crop validation error rate(%):
+   Full imagenet dataset: `fall11_whole.tar` from
+   http://www.image-net.org/download-images.
+
+   We removed classes with less than 500 images. The filtered dataset contains
+   11221 classes and 12.4 millions images. We randomly pick 50 images from each
+   class as the validation set. The split is available at http://data.dmlc.ml/mxnet/models/imagenet-11k/
+
+  | Network       | Top-1 error | Top-5 error | Traind Model |
+  | :------------ | :---------: | :---------: | :-------------: |
+  | ResNet-50 | 71.4 | 45.6 | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet-11k/resnet-50/) |
+  | ResNet-152 | 68.1 | 41.1 | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet-11k/resnet-152/) |
+
+
+### cifar10: single crop validation error rate(%):
 
   | Network    | top-1 |
   | :------:   | :---: |
-  |ResNet-164  | 4.68 |
+  | ResNet-164  | 4.68 |
 
 ## How to Train
 
 ### imagenet
-first you should prepare the `train.lst` and `val.lst`, you can generate this list files by yourself(please ref.[make-the-image-list]( http://mxnet.readthedocs.io/en/latest/packages/python/io.html#make-the-image-list), and do not forget to shuffle the list files!), or just download the provided version from [here](http://data.dmlc.ml/mxnet/models/imagenet/resnet/).  
+first you should prepare the `train.lst` and `val.lst`, you can generate this list files by yourself(please ref.[make-the-image-list]( http://mxnet.readthedocs.io/en/latest/packages/python/io.html#make-the-image-list), and do not forget to shuffle the list files!), or just download the provided version from [here](http://data.dmlc.ml/mxnet/models/imagenet/resnet/).
 
 then you can create the ```*.rec``` file, i recommend use this cmd parameters:
 ```shell
@@ -94,10 +112,10 @@ cancel this scale/color/aspect augmentation can be done easily by using ```--aug
 * it's better for running longer than 30 epoch before first decrease the ```lr```(such as 60), so you may decide  the epoch number by observe the val-acc curve, and set lr with ```retrain```.
 
 ## ResNet-v2 vs ResNet-v1
-**Does ResNet-v2 always achieve better result than ResNet-v1 on imagnet?**  
-The answer is **NO**, ResNet-v2 has no advantage or even has disadvantage than ResNet-v1 when  `depth<152`, we can get the following result from paper[2].(why?)  
+**Does ResNet-v2 always achieve better result than ResNet-v1 on imagnet?**
+The answer is **NO**, ResNet-v2 has no advantage or even has disadvantage than ResNet-v1 when  `depth<152`, we can get the following result from paper[2].(why?)
 
-ImageNet: single center crop validation error rate(%)  
+ImageNet: single center crop validation error rate(%)
 
 | Network    |crop-size | top-1 |  top-5 |
 | :------:   | :---: | :---: |:---: |
@@ -107,7 +125,7 @@ ImageNet: single center crop validation error rate(%)
 |ResNet-152-v2  | 320x320 |21.1|5.5|
 
 we can see that:
-* when `depth=101`, ResNet-v2 is 1% worse than ResNet-v1 on top-1 and 0.4% worse on top-5.   
+* when `depth=101`, ResNet-v2 is 1% worse than ResNet-v1 on top-1 and 0.4% worse on top-5.
 * when `depth=152`, ResNet-v2 is only 0.2% better than ResNet-v1 on top-1 and owns the same performance on top-5 even when crop-size=320x320.
 
 
@@ -117,8 +135,8 @@ we can use the pre-trained model to classify one input image, the step is easy:
 * ```cd predict``` and run ```python -u predict.py --img test.jpg --prefix resnet-50 --gpu 0```, this means you want to recgnition test.jpg using model resnet-50-0000.params and gpu 0, then it will output the classification result.
 
 ## Reference
-[1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).  
-[2] Kaiming He, et al. "Identity Mappings in Deep Residual Networks" arXiv:1603.05027 (2016)  
-[3] caffe official training code and model, https://github.com/KaimingHe/deep-residual-networks  
-[4] torch training code and model provided by facebook, https://github.com/facebook/fb.resnet.torch  
+[1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).
+[2] Kaiming He, et al. "Identity Mappings in Deep Residual Networks" arXiv:1603.05027 (2016)
+[3] caffe official training code and model, https://github.com/KaimingHe/deep-residual-networks
+[4] torch training code and model provided by facebook, https://github.com/facebook/fb.resnet.torch
 [5] MXNet resnet-v1 cifar10 examples,https://github.com/dmlc/mxnet/blob/master/example/image-classification/train_cifar10_resnet.py
