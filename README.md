@@ -10,39 +10,39 @@ The trained ResNet models achieve better error rates than the [original ResNet-v
 
 ### ImageNet 1K
 
-  Imagenet 1000 class dataset with 1.2 million images.
+Imagenet 1000 class dataset with 1.2 million images.
 
-  single center crop (224x224) validation error rate(%)
+single center crop (224x224) validation error rate(%)
 
-  | Network       | Top-1 error | Top-5 error | Traind Model |
-  | :------------ | :---------: | :---------: | :-------------: |
-  | ResNet-18     | 30.90       | 11.02       |[data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/18-layers/) |
-  | ResNet-34     | 27.20      | 8.86        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/34-layers/) |
-  | ResNet-50     | 24.39   | 7.24   | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/50-layers/) |
-  | ResNet-101    | 22.68      | 6.58        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/101-layers/) |
-  | ResNet-152    | 22.25       | 6.42        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/152-layers/) |
-  | ResNet-200    | --       | --        | |
+| Network       | Top-1 error | Top-5 error | Traind Model |
+| :------------ | :---------: | :---------: | :-------------: |
+| ResNet-18     | 30.90       | 11.02       |[data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/18-layers/) |
+| ResNet-34     | 27.20      | 8.86        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/34-layers/) |
+| ResNet-50     | 24.39   | 7.24   | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/50-layers/) |
+| ResNet-101    | 22.68      | 6.58        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/101-layers/) |
+| ResNet-152    | 22.25       | 6.42        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/152-layers/) |
+| ResNet-200    | --       | --        | |
 
 ### ImageNet 11K:
 
-   Full imagenet dataset: `fall11_whole.tar` from
-   http://www.image-net.org/download-images.
+ Full imagenet dataset: `fall11_whole.tar` from
+ http://www.image-net.org/download-images.
 
-   We removed classes with less than 500 images. The filtered dataset contains
-   11221 classes and 12.4 millions images. We randomly pick 50 images from each
-   class as the validation set. The split is available at http://data.dmlc.ml/mxnet/models/imagenet-11k/
+ We removed classes with less than 500 images. The filtered dataset contains
+ 11221 classes and 12.4 millions images. We randomly pick 50 images from each
+ class as the validation set. The split is available at http://data.dmlc.ml/mxnet/models/imagenet-11k/
 
-  | Network       | Top-1 error | Top-5 error | Traind Model |
-  | :------------ | :---------: | :---------: | :-------------: |
-  | ResNet-50 | 71.4 | 45.6 | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet-11k/resnet-50/) |
-  | ResNet-152 | 68.1 | 41.1 | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet-11k/resnet-152/) |
+| Network       | Top-1 error | Top-5 error | Traind Model |
+| :------------ | :---------: | :---------: | :-------------: |
+| ResNet-50 | 71.4 | 45.6 | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet-11k/resnet-50/) |
+| ResNet-152 | 68.1 | 41.1 | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet-11k/resnet-152/) |
 
 
 ### cifar10: single crop validation error rate(%):
 
-  | Network    | top-1 |
-  | :------:   | :---: |
-  | ResNet-164  | 4.68 |
+| Network    | top-1 |
+| :------:   | :---: |
+| ResNet-164  | 4.68 |
 
 ## How to Train
 
