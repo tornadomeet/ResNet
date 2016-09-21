@@ -111,6 +111,13 @@ $im2rec_path train.lst train/ data/imagenet/train_256_q90.rec resize=256 quality
 cancel this scale/color/aspect augmentation can be done easily by using ```--aug-level=1``` in your cmd.
 * it's better for running longer than 30 epoch before first decrease the ```lr```(such as 60), so you may decide  the epoch number by observe the val-acc curve, and set lr with ```retrain```.
 
+## Training ResNet-200 by only one gpu with 'dark knowledge' of mxnet
+you can training ResNet-200 or even ResNet-1000 on imaget with only one gpu! for example, we can train ResNet-200 with batch-size=128 on one gpu(=12G), or if your gpu memory is less than 12G, you should decrease the batch-size by a little. here is the way of how to using 'dark knowledge' of mxnet:
+* download the file  https://github.com/dmlc/mxnet-memonger/blob/master/memonger.py, and put it on the root path of this resnet repo.
+* add `--memonger` to your training cmd, i.e. `python train_resnet.py --memonger ...`.  
+
+when turn on memonger, the trainning speed will be about 25% slower, but we can training more depth network, have fun!
+
 ## ResNet-v2 vs ResNet-v1
 **Does ResNet-v2 always achieve better result than ResNet-v1 on imagnet?**
 The answer is **NO**, ResNet-v2 has no advantage or even has disadvantage than ResNet-v1 when  `depth<152`, we can get the following result from paper[2].(why?)
