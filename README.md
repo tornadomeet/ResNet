@@ -142,8 +142,8 @@ we can use the pre-trained model to classify one input image, the step is easy:
 * ```cd predict``` and run ```python -u predict.py --img test.jpg --prefix resnet-50 --gpu 0```, this means you want to recgnition test.jpg using model resnet-50-0000.params and gpu 0, then it will output the classification result.
 
 ## Reference
-[1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).
-[2] Kaiming He, et al. "Identity Mappings in Deep Residual Networks" arXiv:1603.05027 (2016)
-[3] caffe official training code and model, https://github.com/KaimingHe/deep-residual-networks
-[4] torch training code and model provided by facebook, https://github.com/facebook/fb.resnet.torch
+[1] Kaiming He, et al. "Deep Residual Learning for Image Recognition." arXiv arXiv:1512.03385 (2015).  
+[2] Kaiming He, et al. "Identity Mappings in Deep Residual Networks" arXiv:1603.05027 (2016).  
+[3] caffe official training code and model, https://github.com/KaimingHe/deep-residual-networks  
+[4] torch training code and model provided by facebook, https://github.com/facebook/fb.resnet.torch  
 [5] MXNet resnet-v1 cifar10 examples,https://github.com/dmlc/mxnet/blob/master/example/image-classification/train_cifar10_resnet.py
