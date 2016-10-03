@@ -34,8 +34,7 @@ single center crop (224x224) validation error rate(%)
 
 | Network       | Top-1 error | Top-5 error | Traind Model |
 | :------------ | :---------: | :---------: | :-------------: |
-| ResNet-50 | 71.4 | 45.6 | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet-11k/resnet-50/) |
-| ResNet-152 | 68.1 | 41.1 | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet-11k/resnet-152/) |
+| ResNet-200 | 58.4 | 28.8 |  |
 
 
 ### cifar10: single crop validation error rate(%):
