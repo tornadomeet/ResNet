@@ -44,7 +44,7 @@ def main():
             units = [3, 8, 36, 3]
         elif args.depth == 200:
             units = [3, 24, 36, 3]
-        elif args.depth == 260:
+        elif args.depth == 269:
             units = [3, 30, 48, 8]
         else:
             raise ValueError("no experiments done on detph {}, you can do it youself".format(args.depth))
