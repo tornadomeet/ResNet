@@ -21,7 +21,7 @@ single center crop (224x224) validation error rate(%)
 | ResNet-50     | 24.39   | 7.24   | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/50-layers/) |
 | ResNet-101    | 22.68      | 6.58        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/101-layers/) |
 | ResNet-152    | 22.25       | 6.42        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/152-layers/) |
-| ResNet-200    | --       | --        | |
+| ResNet-200    | 22.14       | 6.16        | [data.dmlc.ml](http://data.dmlc.ml/mxnet/models/imagenet/resnet/200-layers/) |
 
 ### ImageNet 11K:
 
