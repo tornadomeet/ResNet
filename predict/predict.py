@@ -14,10 +14,10 @@ def ch_dev(arg_params, aux_params, ctx):
 
 def main():
     synset = [l.strip() for l in open(args.synset).readlines()]
-    img = cv2.imread(args.img)  # read image in b,g,r order
+    img = cv2.cvtColor(cv2.imread(args.img), cv2.COLOR_BGR2RGB)
     img = cv2.resize(img, (224, 224))  # resize to 224*224 to fit model
     img = np.swapaxes(img, 0, 2)
-    img = np.swapaxes(img, 1, 2)  # change to r,g,b order
+    img = np.swapaxes(img, 1, 2)  # change to (c, h,w) order
     img = img[np.newaxis, :]  # extend to (n, c, h, w)
 
     ctx = mx.gpu(args.gpu)
