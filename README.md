@@ -46,7 +46,9 @@ single center crop (224x224) validation error rate(%)
 ### Training Curve
 The following curve is ResNet-v2 trainined on imagenet-1k, all the training detail you can found [here](./log), which include gpu information, lr schedular, batch-size etc, and you can also see the training speed with the corresponding logs.   
 
-![training-curve](./log/training-curve.png)
+<div align="left">
+  <img src="./log/training-curve.png"/>
+</div>
 
 you can get the curve by run:  
 ```cd log && python  plot_curve.py --logs=resnet-18.log,resnet-34.log,resnet-50.log,resnet-101.log,resnet-152.log,resnet-200.log```
