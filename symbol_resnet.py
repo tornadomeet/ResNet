@@ -1,5 +1,5 @@
 '''
-Reproducing parper:
+Reproducing paper:
 Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun. "Identity Mappings in Deep Residual Networks"
 '''
 import mxnet as mx
