@@ -14,6 +14,7 @@ def multi_factor_scheduler(begin_epoch, epoch_size, step=[60, 75, 90], factor=0.
 def main():
     if args.data_type == "cifar10":
         args.aug_level = 1
+        args.num_classes = 10
         # depth should be one of 110, 164, 1001,...,which is should fit (args.depth-2)%9 == 0
         if((args.depth-2)%9 == 0 and args.depth >= 164):
             per_unit = [(args.depth-2)/9]
@@ -26,9 +27,11 @@ def main():
         else:
             raise ValueError("no experiments done on detph {}, you can do it youself".format(args.depth))
         units = per_unit*3
-        symbol = resnet(units=units, num_stage=3, filter_list=filter_list, num_class=10, data_type="cifar10",
-                        bottle_neck = bottle_neck, bn_mom=args.bn_mom, workspace=512)
+        symbol = resnet(units=units, num_stage=3, filter_list=filter_list, num_class=args.num_classes,
+                        data_type="cifar10", bottle_neck = bottle_neck, bn_mom=args.bn_mom, workspace=args.workspace,
+                        memonger=args.memonger)
     elif args.data_type == "imagenet":
+        args.num_classes = 1000
         if args.depth == 18:
             units = [2, 2, 2, 2]
         elif args.depth == 34:
@@ -41,25 +44,32 @@ def main():
             units = [3, 8, 36, 3]
         elif args.depth == 200:
             units = [3, 24, 36, 3]
+        elif args.depth == 269:
+            units = [3, 30, 48, 8]
         else:
             raise ValueError("no experiments done on detph {}, you can do it youself".format(args.depth))
         symbol = resnet(units=units, num_stage=4, filter_list=[64, 256, 512, 1024, 2048] if args.depth >=50
-                        else [64, 64, 128, 256, 512], num_class=1000, data_type="imagenet", bottle_neck = True
-                        if args.depth >= 50 else False, bn_mom=args.bn_mom, workspace=512)
+                        else [64, 64, 128, 256, 512], num_class=args.num_classes, data_type="imagenet", bottle_neck = True
+                        if args.depth >= 50 else False, bn_mom=args.bn_mom, workspace=args.workspace,
+                        memonger=args.memonger)
     else:
          raise ValueError("do not support {} yet".format(args.data_type))
+    kv = mx.kvstore.create(args.kv_store)
     devs = mx.cpu() if args.gpus is None else [mx.gpu(int(i)) for i in args.gpus.split(',')]
-    epoch_size = max(int(args.num_examples / args.batch_size), 1)
+    epoch_size = max(int(args.num_examples / args.batch_size / kv.num_workers), 1)
     begin_epoch = args.model_load_epoch if args.model_load_epoch else 0
     if not os.path.exists("./model"):
         os.mkdir("./model")
-    checkpoint = mx.callback.do_checkpoint("model/resnet-{}-{}".format(args.data_type, args.depth))
-    kv = mx.kvstore.create(args.kv_store)
+    model_prefix = "model/resnet-{}-{}-{}".format(args.data_type, args.depth, kv.rank)
+    checkpoint = mx.callback.do_checkpoint(model_prefix)
     arg_params = None
     aux_params = None
     if args.retrain:
-        _, arg_params, aux_params = mx.model.load_checkpoint("model/resnet-{}-{}".format(args.data_type, args.depth),
-                                                             args.model_load_epoch)
+        _, arg_params, aux_params = mx.model.load_checkpoint(model_prefix, args.model_load_epoch)
+    if args.memonger:
+        import memonger
+        symbol = memonger.search_plan(symbol, data=(args.batch_size, 3, 32, 32) if args.data_type=="cifar10"
+                                                    else (args.batch_size, 3, 224, 224))
     train = mx.io.ImageRecordIter(
         path_imgrec         = os.path.join(args.data_dir, "train.rec") if args.data_type == 'cifar10' else
                               os.path.join(args.data_dir, "train_256_q90.rec") if args.aug_level == 1
@@ -119,7 +129,7 @@ def main():
         eval_metric        = ['acc'] if args.data_type=='cifar10' else
                              ['acc', mx.metric.create('top_k_accuracy', top_k = 5)],
         kvstore            = kv,
-        batch_end_callback = mx.callback.Speedometer(args.batch_size, 50),
+        batch_end_callback = mx.callback.Speedometer(args.batch_size, args.frequent),
         epoch_end_callback = checkpoint)
     # logging.info("top-1 and top-5 acc is {}".format(model.score(X = val,
     #               eval_metric = ['acc', mx.metric.create('top_k_accuracy', top_k = 5)])))
@@ -136,7 +146,10 @@ if __name__ == "__main__":
     parser.add_argument('--bn-mom', type=float, default=0.9, help='momentum for batch normlization')
     parser.add_argument('--wd', type=float, default=0.0001, help='weight decay for sgd')
     parser.add_argument('--batch-size', type=int, default=256, help='the batch size')
+    parser.add_argument('--workspace', type=int, default=512, help='memory space size(MB) used in convolution, if xpu '
+                        ' memory is oom, then you can try smaller vale, such as --workspace 256')
     parser.add_argument('--depth', type=int, default=50, help='the depth of resnet')
+    parser.add_argument('--num-classes', type=int, default=1000, help='the class number of your task')
     parser.add_argument('--aug-level', type=int, default=2, choices=[1, 2, 3],
                         help='level 1: use only random crop and random mirror\n'
                              'level 2: add scale/aspect/hsv augmentation based on level 1\n'
@@ -145,8 +158,10 @@ if __name__ == "__main__":
     parser.add_argument('--kv-store', type=str, default='device', help='the kvstore type')
     parser.add_argument('--model-load-epoch', type=int, default=0,
                         help='load the model on an epoch using the model-load-prefix')
+    parser.add_argument('--frequent', type=int, default=50, help='frequency of logging')
+    parser.add_argument('--memonger', action='store_true', default=False,
+                        help='true means using memonger to save momory, https://github.com/dmlc/mxnet-memonger')
     parser.add_argument('--retrain', action='store_true', default=False, help='true means continue training')
     args = parser.parse_args()
     logging.info(args)
     main()
-

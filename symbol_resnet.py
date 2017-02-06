@@ -1,10 +1,10 @@
 '''
-Reproducing parper:
+Reproducing paper:
 Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun. "Identity Mappings in Deep Residual Networks"
 '''
 import mxnet as mx
 
-def residual_unit(data, num_filter, stride, dim_match, name, bottle_neck=True, bn_mom=0.9, workspace=512):
+def residual_unit(data, num_filter, stride, dim_match, name, bottle_neck=True, bn_mom=0.9, workspace=512, memonger=False):
     """Return ResNet Unit symbol for building ResNet
     Parameters
     ----------
@@ -42,6 +42,8 @@ def residual_unit(data, num_filter, stride, dim_match, name, bottle_neck=True, b
         else:
             shortcut = mx.sym.Convolution(data=act1, num_filter=num_filter, kernel=(1,1), stride=stride, no_bias=True,
                                             workspace=workspace, name=name+'_sc')
+        if memonger:
+            shortcut._set_attr(mirror_stage='True')
         return conv3 + shortcut
     else:
         bn1 = mx.sym.BatchNorm(data=data, fix_gamma=False, momentum=bn_mom, eps=2e-5, name=name + '_bn1')
@@ -57,9 +59,11 @@ def residual_unit(data, num_filter, stride, dim_match, name, bottle_neck=True, b
         else:
             shortcut = mx.sym.Convolution(data=act1, num_filter=num_filter, kernel=(1,1), stride=stride, no_bias=True,
                                             workspace=workspace, name=name+'_sc')
+        if memonger:
+            shortcut._set_attr(mirror_stage='True')
         return conv2 + shortcut
 
-def resnet(units, num_stage, filter_list, num_class, data_type, bottle_neck=True, bn_mom=0.9, workspace=512):
+def resnet(units, num_stage, filter_list, num_class, data_type, bottle_neck=True, bn_mom=0.9, workspace=512, memonger=False):
     """Return ResNet symbol of cifar10 and imagenet
     Parameters
     ----------
@@ -93,10 +97,11 @@ def resnet(units, num_stage, filter_list, num_class, data_type, bottle_neck=True
          raise ValueError("do not support {} yet".format(data_type))
     for i in range(num_stage):
         body = residual_unit(body, filter_list[i+1], (1 if i==0 else 2, 1 if i==0 else 2), False,
-                             name='stage%d_unit%d' % (i + 1, 1), bottle_neck=bottle_neck, workspace=workspace)
+                             name='stage%d_unit%d' % (i + 1, 1), bottle_neck=bottle_neck, workspace=workspace,
+                             memonger=memonger)
         for j in range(units[i]-1):
             body = residual_unit(body, filter_list[i+1], (1,1), True, name='stage%d_unit%d' % (i + 1, j + 2),
-                                 bottle_neck=bottle_neck, workspace=workspace)
+                                 bottle_neck=bottle_neck, workspace=workspace, memonger=memonger)
     bn1 = mx.sym.BatchNorm(data=body, fix_gamma=False, eps=2e-5, momentum=bn_mom, name='bn1')
     relu1 = mx.sym.Activation(data=bn1, act_type='relu', name='relu1')
     # Although kernel is not used here when global_pool=True, we should put one

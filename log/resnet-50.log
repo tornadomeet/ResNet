@@ -20103,10 +20103,6 @@ INFO:root:Epoch[97] Time cost=23039.205
 INFO:root:Saved checkpoint to "model/resnet-imagenet-50-0098.params"
 INFO:root:Epoch[97] Validation-accuracy=0.750319
 INFO:root:Epoch[97] Validation-top_k_accuracy_5=0.925801
-INFO:root:Namespace(batch_size=256, bn_mom=0.9, data_dir='/home/work/data/ImageClassify/imagenet/CLS-LOC/limu', data_type='imagenet', depth=50, gpus='2,3,4,5,6,7', kv_store='local', list_dir='./', lr=0.0001, model_load_epoch=98, mom=0.9, num_examples=1281167, retrain=True, wd=0.0001)
-[09:59:55] src/io/iter_image_recordio.cc:211: ImageRecordIOParser: /home/work/data/ImageClassify/imagenet/CLS-LOC/limu/train_256_q90.rec, use 4 threads for decoding..
-[09:59:56] src/io/iter_image_recordio.cc:211: ImageRecordIOParser: /home/work/data/ImageClassify/imagenet/CLS-LOC/limu/val_256_q90.rec, use 4 threads for decoding..
-INFO:root:Start training with [gpu(2), gpu(3), gpu(4), gpu(5), gpu(6), gpu(7)]
 INFO:root:Epoch[98] Batch [50]	Speed: 242.71 samples/sec	Train-accuracy=0.830156
 INFO:root:Epoch[98] Batch [50]	Speed: 242.71 samples/sec	Train-top_k_accuracy_5=0.957969
 INFO:root:Epoch[98] Batch [100]	Speed: 230.55 samples/sec	Train-accuracy=0.832344
@@ -23797,10 +23793,6 @@ INFO:root:Epoch[115] Time cost=5520.052
 INFO:root:Saved checkpoint to "model/resnet-imagenet-50-0116.params"
 INFO:root:Epoch[115] Validation-accuracy=0.754325
 INFO:root:Epoch[115] Validation-top_k_accuracy_5=0.927057
-INFO:root:Namespace(aug_level=1, batch_size=256, bn_mom=0.9, data_dir='/home/work/data/ImageClassify/imagenet/CLS-LOC/limu', data_type='imagenet', depth=50, gpus='2,3,4,5,6,7', kv_store='local', list_dir='./', lr=0.0001, model_load_epoch=116, mom=0.9, num_examples=1281167, retrain=True, wd=0.0001)
-[10:31:37] src/io/iter_image_recordio.cc:211: ImageRecordIOParser: /home/work/data/ImageClassify/imagenet/CLS-LOC/limu/train_256_q90.rec, use 4 threads for decoding..
-[10:31:38] src/io/iter_image_recordio.cc:211: ImageRecordIOParser: /home/work/data/ImageClassify/imagenet/CLS-LOC/limu/val_256_q90.rec, use 4 threads for decoding..
-INFO:root:Start training with [gpu(2), gpu(3), gpu(4), gpu(5), gpu(6), gpu(7)]
 INFO:root:Epoch[116] Batch [50]	Speed: 247.14 samples/sec	Train-accuracy=0.843203
 INFO:root:Epoch[116] Batch [50]	Speed: 247.14 samples/sec	Train-top_k_accuracy_5=0.967422
 INFO:root:Epoch[116] Batch [100]	Speed: 234.41 samples/sec	Train-accuracy=0.847891
