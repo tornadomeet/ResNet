@@ -53,7 +53,7 @@ def plot_acc(log_name, color="r"):
 def main():
     plt.figure(figsize=(14, 8))
     plt.xlabel("epoch")
-    plt.ylabel("Top-1 accuracy")
+    plt.ylabel("Top-1 error")
     color = ['r', 'g', 'b', 'c', 'm', 'y', 'k', 'w']
     log_files = [i for i in args.logs.split(',')]
     color = color[:len(log_files)]
