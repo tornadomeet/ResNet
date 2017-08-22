@@ -71,7 +71,7 @@ def main():
         symbol = memonger.search_plan(symbol, data=(args.batch_size, 3, 32, 32) if args.data_type=="cifar10"
                                                     else (args.batch_size, 3, 224, 224))
     train = mx.io.ImageRecordIter(
-        path_imgrec         = os.path.join(args.data_dir, "train.rec") if args.data_type == 'cifar10' else
+        path_imgrec         = os.path.join(args.data_dir, "cifar10_train.rec") if args.data_type == 'cifar10' else
                               os.path.join(args.data_dir, "train_256_q90.rec") if args.aug_level == 1
                               else os.path.join(args.data_dir, "train_480_q90.rec"),
         label_width         = 1,
@@ -95,7 +95,7 @@ def main():
         num_parts           = kv.num_workers,
         part_index          = kv.rank)
     val = mx.io.ImageRecordIter(
-        path_imgrec         = os.path.join(args.data_dir, "val.rec") if args.data_type == 'cifar10' else
+        path_imgrec         = os.path.join(args.data_dir, "cifar10_val.rec") if args.data_type == 'cifar10' else
                               os.path.join(args.data_dir, "val_256_q90.rec"),
         label_width         = 1,
         data_name           = 'data',
