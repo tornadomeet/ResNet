@@ -126,7 +126,7 @@ def main():
     model.fit(
         X                  = train,
         eval_data          = val,
-        eval_metric        = ['acc'] if args.data_type=='cifar10' else
+        eval_metric        = ['acc', 'ce'] if args.data_type=='cifar10' else
                              ['acc', mx.metric.create('top_k_accuracy', top_k = 5)],
         kvstore            = kv,
         batch_end_callback = mx.callback.Speedometer(args.batch_size, args.frequent),
